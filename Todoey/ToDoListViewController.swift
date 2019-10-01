@@ -11,7 +11,7 @@ import UIKit
 class TodoListViewController: UITableViewController {
     
     // temp data array
-    let itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
+    var itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,5 +40,56 @@ class TodoListViewController: UITableViewController {
     }
     
     
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        var myNewField =  UITextField()
+        let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "Add Item", style: .default) { (action) in
+
+            self.itemArray.append(textField.text!)
+            self.tableView.reloadData()
+            print(textField.text ?? "Default Value")
+            print(myNewField.text ?? "Default Value")
+            print("Add Item Pressed")
+            print(self.itemArray)
+        }
+        let action2 = UIAlertAction(title: "Cancel Item", style: .cancel) { (action) in
+            print(textField.text ?? "Default Value")
+            print(myNewField.text ?? "Default Value")
+            print("Cancel Item Pressed")
+        }
+        /*
+        let action3 = UIAlertAction(title: "Third Option", style: .default) { (action) in
+            print(textField.text ?? "Default Value")
+            print(myNewField.text ?? "Default Value")
+            print("Third Item Pressed")
+        }
+         */
+        
+        // how does textField get set when control is clearly OUT of this block?
+        // does textField assume a pointer to alertTextField and is set OUTSIDE the block?
+        // if so, can't other vars be set inside of a block when the var inside the block is nil?
+        
+        alert.addTextField {  (alertTextField) in
+            alertTextField.placeholder = "Create New Item"
+            textField = alertTextField
+            print("textField is:", textField)
+            print(alertTextField.text!)
+        }
+        // simple test to see how to do several field in an alert
+        alert.addTextField {  (alertTextField) in
+            alertTextField.placeholder = "Create New Item"
+            myNewField = alertTextField
+            print("textField is:", myNewField)
+            print(alertTextField.text!)
+        }
+        
+        alert.addAction(action1)
+        alert.addAction(action2)
+        //alert.addAction(action3)
+
+        present(alert, animated: true, completion: nil)
+    }
+        
 }
 
